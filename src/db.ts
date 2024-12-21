@@ -1,7 +1,7 @@
 import mongoose, { connect } from "mongoose";
 export async function connect_db() {
     try {
-        await connect("mongodb+srv://happy:bmOUOnDqLcxUT5Z1@cluster0.qoh18.mongodb.net/brainly");
+        await connect(process.env.DB_CONNECTION as string);
         console.log("MongoDB connected successfully...");
         // console.log(stored.connection,stored.Collection);
     } catch (error) {

@@ -3,13 +3,15 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { random } from "./utils";
-import { JWT_PASSWORD } from "./config";
 import { userMiddleware } from "./middleware";
 import bcrypt from "bcrypt";
 import { UserModel } from "./models/user.model";
 import { ContentModel } from "./models/content.model";
 import { connect_db } from "./db";
 import { LinkModel } from "./models/link.model"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 const app = express();
 app.use(express.json());
@@ -70,7 +72,7 @@ app.post("/api/v1/signin", async (req, res) => {
         const passwordMatch = await bcrypt.compare(password, hash);
         console.log(passwordMatch);
         if (passwordMatch) {
-          const token = jwt.sign({ id: existingUser._id }, JWT_PASSWORD);
+          const token = jwt.sign({ id: existingUser._id }, process.env.JWT_PASSWORD as string);
           res.json({ token });
         } else {
           res.status(401).json({ message: "Incorrect credentials" });
